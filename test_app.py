@@ -299,5 +299,48 @@ class EMPTestCase(unittest.TestCase):
         self.assertIn(b'Rohit Gupta', res_search.data)
         self.logout()
 
+    def test_07_unauthenticated_and_role_access_control(self):
+        # Unauthenticated redirects
+        protected_urls = [
+            '/admin/dashboard', '/admin/courses', '/admin/exams',
+            '/examiner/dashboard', '/examiner/slots',
+            '/student/dashboard', '/student/exams', '/student/bookings'
+        ]
+        for url in protected_urls:
+            res = self.client.get(url, follow_redirects=False)
+            self.assertEqual(res.status_code, 302, f"URL {url} should redirect unauthenticated user")
+            self.assertIn('/login', res.headers['Location'])
+
+        # Register and login student
+        self.client.post('/register/student', data=dict(
+            full_name='Role Test Student', roll_no='R999', username='role_stu', email='role_stu@test.com',
+            department='CS', phone='1234567890', password='password123', confirm_password='password123'
+        ), follow_redirects=True)
+        self.login('role_stu', 'password123')
+
+        # Student trying to access admin dashboard -> redirected/blocked
+        res_admin = self.client.get('/admin/dashboard', follow_redirects=True)
+        self.assertIn(b'do not have permission', res_admin.data)
+
+        # Student trying to access examiner dashboard -> redirected/blocked
+        res_examiner = self.client.get('/examiner/dashboard', follow_redirects=True)
+        self.assertIn(b'do not have permission', res_examiner.data)
+        self.logout()
+
+    def test_08_registration_validations(self):
+        # Mismatched passwords
+        res = self.client.post('/register/student', data=dict(
+            full_name='Test', roll_no='T01', username='u_fail', email='u_fail@test.com',
+            department='CS', phone='123', password='pass1', confirm_password='pass2'
+        ), follow_redirects=True)
+        self.assertIn(b'Passwords do not match', res.data)
+
+        # Short password
+        res = self.client.post('/register/student', data=dict(
+            full_name='Test', roll_no='T01', username='u_fail', email='u_fail@test.com',
+            department='CS', phone='123', password='123', confirm_password='123'
+        ), follow_redirects=True)
+        self.assertIn(b'at least 6 characters', res.data)
+
 if __name__ == '__main__':
     unittest.main()
