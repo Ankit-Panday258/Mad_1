@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ action }} Examination - Admin{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-primary text-white py-3">
+                <h5 class="mb-0 fw-bold"><i class="bi bi-file-earmark-plus me-2"></i>{{ action }} Examination</h5>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="course_id" class="form-label fw-semibold">Course *</label>
+                            <select class="form-select" id="course_id" name="course_id" required>
+                                <option value="" disabled {% if not exam %}selected{% endif %}>Select Course</option>
+                                {% for c in courses %}
+                                    <option value="{{ c.id }}" {% if exam and exam.course_id == c.id %}selected{% endif %}>
+                                        {{ c.course_code }} - {{ c.course_name }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="exam_name" class="form-label fw-semibold">Examination Name *</label>
+                            <input type="text" class="form-control" id="exam_name" name="exam_name" 
+                                   value="{{ exam.exam_name if exam else '' }}" required placeholder="e.g. End Term Viva / Project Demo">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="exam_type" class="form-label fw-semibold">Examination Type *</label>
+                            <select class="form-select" id="exam_type" name="exam_type">
+                                <option value="Viva" {% if exam and exam.exam_type == 'Viva' %}selected{% endif %}>Viva</option>
+                                <option value="Practical" {% if exam and exam.exam_type == 'Practical' %}selected{% endif %}>Practical</option>
+                                <option value="Project Demo" {% if exam and exam.exam_type == 'Project Demo' %}selected{% endif %}>Project Demo</option>
+                                <option value="Assessment" {% if exam and exam.exam_type == 'Assessment' %}selected{% endif %}>Assessment</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="duration" class="form-label fw-semibold">Duration (Minutes) *</label>
+                            <input type="number" class="form-control" id="duration" name="duration" min="5" max="300" 
+                                   value="{{ exam.duration if exam else 30 }}" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label for="max_marks" class="form-label fw-semibold">Maximum Marks *</label>
+                            <input type="number" class="form-control" id="max_marks" name="max_marks" min="1" max="1000" 
+                                   value="{{ exam.max_marks if exam else 100 }}" required>
+                        </div>
+                    </div>
+
+                    <h6 class="fw-bold text-secondary mt-3 mb-2"><i class="bi bi-clock-history"></i> Examination Timelines</h6>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="slot_creation_start_date" class="form-label fw-semibold">Examiner Slot Creation Start *</label>
+                            <input type="date" class="form-control" id="slot_creation_start_date" name="slot_creation_start_date" 
+                                   value="{{ exam.slot_creation_start_date.strftime('%Y-%m-%d') if exam else '' }}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="slot_creation_end_date" class="form-label fw-semibold">Examiner Slot Creation End *</label>
+                            <input type="date" class="form-control" id="slot_creation_end_date" name="slot_creation_end_date" 
+                                   value="{{ exam.slot_creation_end_date.strftime('%Y-%m-%d') if exam else '' }}" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="slot_booking_start_date" class="form-label fw-semibold">Student Booking Start *</label>
+                            <input type="date" class="form-control" id="slot_booking_start_date" name="slot_booking_start_date" 
+                                   value="{{ exam.slot_booking_start_date.strftime('%Y-%m-%d') if exam else '' }}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="slot_booking_end_date" class="form-label fw-semibold">Student Booking End *</label>
+                            <input type="date" class="form-control" id="slot_booking_end_date" name="slot_booking_end_date" 
+                                   value="{{ exam.slot_booking_end_date.strftime('%Y-%m-%d') if exam else '' }}" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="status" class="form-label fw-semibold">Initial Status</label>
+                        <select class="form-select" id="status" name="status">
+                            <option value="Draft" {% if exam and exam.status == 'Draft' %}selected{% endif %}>Draft</option>
+                            <option value="Slot Creation" {% if exam and exam.status == 'Slot Creation' %}selected{% endif %}>Slot Creation Open</option>
+                            <option value="Booking Open" {% if exam and exam.status == 'Booking Open' %}selected{% endif %}>Booking Open</option>
+                            <option value="Closed" {% if exam and exam.status == 'Closed' %}selected{% endif %}>Closed</option>
+                            <option value="Completed" {% if exam and exam.status == 'Completed' %}selected{% endif %}>Completed</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="instructions" class="form-label fw-semibold">Instructions for Students & Examiners</label>
+                        <textarea class="form-control" id="instructions" name="instructions" rows="3" placeholder="Guidelines, requirements, or meeting links instructions">{{ exam.instructions if exam else '' }}</textarea>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('admin_exams') }}" class="btn btn-outline-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle me-1"></i> Save Examination</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

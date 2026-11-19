@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}Registered Students - Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold mb-1"><i class="bi bi-people text-primary"></i> Registered Students</h2>
+        <p class="text-muted mb-0">View all registered students and their examination participation</p>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Roll No / ID</th>
+                        <th>Student Name</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Department</th>
+                        <th>Phone</th>
+                        <th>Total Bookings</th>
+                        <th>Evaluated Exams</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for st in students %}
+                    <tr>
+                        <td class="fw-bold text-primary">{{ st.roll_no or 'N/A' }}</td>
+                        <td class="fw-semibold">{{ st.full_name }}</td>
+                        <td><code>{{ st.username }}</code></td>
+                        <td>{{ st.email }}</td>
+                        <td>{{ st.department or '-' }}</td>
+                        <td>{{ st.phone or '-' }}</td>
+                        <td>
+                            <span class="badge bg-secondary">{{ st.bookings|length }} Bookings</span>
+                        </td>
+                        <td>
+                            <span class="badge bg-success">{{ st.evaluations_received|length }} Evaluated</span>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="8" class="text-center py-4 text-muted">No registered students found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

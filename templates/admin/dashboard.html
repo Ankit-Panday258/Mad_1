@@ -1,0 +1,254 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard - EMP{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold text-dark mb-1"><i class="bi bi-shield-lock-fill text-primary"></i> Administrator Dashboard</h2>
+        <p class="text-muted mb-0">Overview of examinations, examiners, courses, and student bookings</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a href="{{ url_for('admin_create_exam') }}" class="btn btn-primary"><i class="bi bi-plus-circle me-1"></i> New Exam</a>
+        <a href="{{ url_for('admin_create_course') }}" class="btn btn-outline-primary"><i class="bi bi-journal-plus me-1"></i> New Course</a>
+        <form method="POST" action="{{ url_for('admin_seed_demo_data') }}" class="d-inline" onsubmit="return confirm('Load sample courses, exams, and examiners?');">
+            <button type="submit" class="btn btn-outline-secondary" title="Populate demo data for testing and viva presentation">
+                <i class="bi bi-database-fill-add"></i> Load Demo Data
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Search Bar -->
+<div class="card mb-4 border-0 shadow-sm">
+    <div class="card-body p-3">
+        <form action="{{ url_for('admin_search') }}" method="GET" class="row g-2 align-items-center">
+            <div class="col-md-10">
+                <div class="input-group">
+                    <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                    <input type="text" name="q" class="form-control border-start-0" placeholder="Search students (by name, roll no), examiners, exams, or booking IDs...">
+                </div>
+            </div>
+            <div class="col-md-2 d-grid">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Quick Statistics Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-md-4 col-lg-2">
+        <div class="card border-0 shadow-sm text-center h-100">
+            <div class="card-body">
+                <div class="text-primary fs-3 mb-1"><i class="bi bi-journal-text"></i></div>
+                <h3 class="fw-bold mb-0">{{ courses_count }}</h3>
+                <small class="text-muted">Courses</small>
+                <div class="mt-2"><a href="{{ url_for('admin_courses') }}" class="small text-decoration-none">View All &rarr;</a></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-lg-2">
+        <div class="card border-0 shadow-sm text-center h-100">
+            <div class="card-body">
+                <div class="text-success fs-3 mb-1"><i class="bi bi-file-earmark-check"></i></div>
+                <h3 class="fw-bold mb-0">{{ exams_count }}</h3>
+                <small class="text-muted">Examinations</small>
+                <div class="mt-2"><a href="{{ url_for('admin_exams') }}" class="small text-decoration-none">View All &rarr;</a></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-lg-2">
+        <div class="card border-0 shadow-sm text-center h-100">
+            <div class="card-body">
+                <div class="text-warning fs-3 mb-1"><i class="bi bi-person-badge"></i></div>
+                <h3 class="fw-bold mb-0">{{ examiners_count }}</h3>
+                <small class="text-muted">Examiners</small>
+                {% if pending_examiners_count > 0 %}
+                    <span class="badge bg-danger mt-1">{{ pending_examiners_count }} pending</span>
+                {% endif %}
+                <div class="mt-2"><a href="{{ url_for('admin_examiners') }}" class="small text-decoration-none">View All &rarr;</a></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-lg-2">
+        <div class="card border-0 shadow-sm text-center h-100">
+            <div class="card-body">
+                <div class="text-info fs-3 mb-1"><i class="bi bi-people"></i></div>
+                <h3 class="fw-bold mb-0">{{ students_count }}</h3>
+                <small class="text-muted">Students</small>
+                <div class="mt-2"><a href="{{ url_for('admin_students') }}" class="small text-decoration-none">View All &rarr;</a></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-lg-2">
+        <div class="card border-0 shadow-sm text-center h-100">
+            <div class="card-body">
+                <div class="text-secondary fs-3 mb-1"><i class="bi bi-clock-history"></i></div>
+                <h3 class="fw-bold mb-0">{{ slots_count }}</h3>
+                <small class="text-muted">Exam Slots</small>
+                <div class="mt-2"><a href="{{ url_for('admin_slots') }}" class="small text-decoration-none">View All &rarr;</a></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 col-lg-2">
+        <div class="card border-0 shadow-sm text-center h-100">
+            <div class="card-body">
+                <div class="text-danger fs-3 mb-1"><i class="bi bi-card-checklist"></i></div>
+                <h3 class="fw-bold mb-0">{{ bookings_count }}</h3>
+                <small class="text-muted">Total Bookings</small>
+                <div class="mt-2"><a href="{{ url_for('admin_bookings') }}" class="small text-decoration-none">View All &rarr;</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Pending Examiner Approvals -->
+{% if pending_examiners %}
+<div class="card border-warning mb-4 shadow-sm">
+    <div class="card-header bg-warning text-dark fw-bold d-flex justify-content-between align-items-center">
+        <span><i class="bi bi-exclamation-triangle-fill me-1"></i> Pending Examiner Approval Requests ({{ pending_examiners|length }})</span>
+        <a href="{{ url_for('admin_examiners') }}" class="btn btn-sm btn-dark">Manage All</a>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Department</th>
+                        <th>Phone</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ex in pending_examiners %}
+                    <tr>
+                        <td class="fw-bold">{{ ex.full_name }}</td>
+                        <td>{{ ex.username }}</td>
+                        <td>{{ ex.email }}</td>
+                        <td>{{ ex.department or 'N/A' }}</td>
+                        <td>{{ ex.phone or 'N/A' }}</td>
+                        <td>
+                            <form method="POST" action="{{ url_for('admin_examiner_status', user_id=ex.id, action='approve') }}" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-success"><i class="bi bi-check-lg"></i> Approve</button>
+                            </form>
+                            <form method="POST" action="{{ url_for('admin_examiner_status', user_id=ex.id, action='deactivate') }}" class="d-inline ms-1">
+                                <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-x-lg"></i> Reject</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Recent Exams and Recent Bookings -->
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+                <h5 class="mb-0 fw-bold"><i class="bi bi-file-earmark-text text-primary me-2"></i>Examinations</h5>
+                <a href="{{ url_for('admin_exams') }}" class="btn btn-sm btn-outline-primary">View All</a>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0 align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Exam Name</th>
+                                <th>Course</th>
+                                <th>Type</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for exam in recent_exams %}
+                            <tr>
+                                <td class="fw-semibold">{{ exam.exam_name }}</td>
+                                <td><span class="badge bg-secondary">{{ exam.course.course_code }}</span></td>
+                                <td>{{ exam.exam_type }}</td>
+                                <td>
+                                    {% if exam.status == 'Booking Open' %}
+                                        <span class="badge bg-success">Booking Open</span>
+                                    {% elif exam.status == 'Slot Creation' %}
+                                        <span class="badge bg-info text-dark">Slot Creation</span>
+                                    {% elif exam.status == 'Draft' %}
+                                        <span class="badge bg-secondary">Draft</span>
+                                    {% elif exam.status == 'Closed' %}
+                                        <span class="badge bg-danger">Closed</span>
+                                    {% else %}
+                                        <span class="badge bg-dark">{{ exam.status }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{{ url_for('admin_exam_rubrics', exam_id=exam.id) }}" class="btn btn-sm btn-outline-secondary" title="Manage Rubrics">Rubrics ({{ exam.rubrics|length }})</a>
+                                    <a href="{{ url_for('admin_edit_exam', exam_id=exam.id) }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></a>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center text-muted py-4">No examinations created yet. Click "New Exam" to create one.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+                <h5 class="mb-0 fw-bold"><i class="bi bi-calendar2-check text-success me-2"></i>Recent Bookings</h5>
+                <a href="{{ url_for('admin_bookings') }}" class="btn btn-sm btn-outline-success">View All</a>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0 align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Student</th>
+                                <th>Exam</th>
+                                <th>Date & Time</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for b in recent_bookings %}
+                            <tr>
+                                <td>
+                                    <div class="fw-semibold">{{ b.student.full_name }}</div>
+                                    <small class="text-muted">{{ b.student.roll_no }}</small>
+                                </td>
+                                <td>{{ b.slot.examination.exam_name }}</td>
+                                <td>
+                                    <div>{{ b.slot.date.strftime('%d %b %Y') }}</div>
+                                    <small class="text-muted">{{ b.slot.start_time.strftime('%H:%M') }}</small>
+                                </td>
+                                <td>
+                                    <span class="badge bg-{{ 'success' if b.status == 'Completed' else 'primary' if b.status == 'Booked' else 'secondary' }}">
+                                        {{ b.status }}
+                                    </span>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="4" class="text-center text-muted py-4">No bookings made yet.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

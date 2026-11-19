@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}All Bookings - Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold mb-1"><i class="bi bi-card-checklist text-primary"></i> All Student Bookings</h2>
+        <p class="text-muted mb-0">Monitor student bookings, evaluation records, and reschedule when necessary</p>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>Student</th>
+                        <th>Examination</th>
+                        <th>Examiner</th>
+                        <th>Slot Details</th>
+                        <th>Status</th>
+                        <th>Reschedule Slot</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for b in bookings %}
+                    <tr>
+                        <td><strong>#{{ b.id }}</strong></td>
+                        <td>
+                            <div class="fw-semibold">{{ b.student.full_name }}</div>
+                            <small class="text-muted">{{ b.student.roll_no }} | {{ b.student.email }}</small>
+                        </td>
+                        <td>
+                            <div class="fw-bold">{{ b.slot.examination.exam_name }}</div>
+                            <small class="text-muted">{{ b.slot.examination.course.course_code }}</small>
+                        </td>
+                        <td>{{ b.slot.examiner.full_name }}</td>
+                        <td>
+                            <div>{{ b.slot.date.strftime('%d %b %Y') }}</div>
+                            <small class="text-muted">{{ b.slot.start_time.strftime('%H:%M') }} - {{ b.slot.end_time.strftime('%H:%M') }}</small>
+                        </td>
+                        <td>
+                            {% if b.status == 'Booked' %}
+                                <span class="badge bg-primary">Booked</span>
+                            {% elif b.status == 'Completed' %}
+                                <span class="badge bg-success">Completed</span>
+                                {% if b.evaluation %}
+                                    <div class="small fw-bold text-success">{{ b.evaluation.total_marks }} / {{ b.slot.examination.max_marks }}</div>
+                                {% endif %}
+                            {% elif b.status == 'Cancelled' %}
+                                <span class="badge bg-danger">Cancelled</span>
+                            {% else %}
+                                <span class="badge bg-secondary">{{ b.status }}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if b.status == 'Booked' %}
+                                <!-- Reschedule Form -->
+                                <form method="POST" action="{{ url_for('admin_reschedule_booking', booking_id=b.id) }}" class="d-flex gap-1 align-items-center" onsubmit="return confirm('Reschedule this booking to selected slot?');">
+                                    <select name="new_slot_id" class="form-select form-select-sm" required style="max-width: 220px;">
+                                        <option value="" disabled selected>Select New Slot</option>
+                                        {% for s in b.slot.examination.slots %}
+                                            {% if s.id != b.slot_id and s.available_seats > 0 %}
+                                                <option value="{{ s.id }}">
+                                                    {{ s.date.strftime('%d %b') }} ({{ s.start_time.strftime('%H:%M') }}) - {{ s.examiner.full_name }}
+                                                </option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                    <button type="submit" class="btn btn-sm btn-outline-warning" title="Reschedule Student Booking">
+                                        <i class="bi bi-arrow-left-right"></i>
+                                    </button>
+                                </form>
+                            {% else %}
+                                <span class="text-muted small">Cannot reschedule ({{ b.status }})</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="7" class="text-center py-4 text-muted">No student bookings found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
