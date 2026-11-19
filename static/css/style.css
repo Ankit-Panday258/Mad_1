@@ -1,0 +1,40 @@
+/* Simple and clean student style */
+body {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-container {
+    flex: 1;
+    padding-top: 25px;
+    padding-bottom: 40px;
+}
+
+.card {
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+
+.card-header {
+    font-weight: 600;
+}
+
+.table th {
+    background-color: #f1f3f5;
+}
+
+.badge {
+    font-weight: 500;
+}
+
+footer {
+    background-color: #ffffff;
+    border-top: 1px solid #dee2e6;
+    padding: 15px 0;
+    text-align: center;
+    color: #6c757d;
+    font-size: 0.9rem;
+}

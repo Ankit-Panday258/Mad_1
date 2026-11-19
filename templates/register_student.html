@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Registration - EMP{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center py-4">
+    <div class="col-md-7 col-lg-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-info text-dark text-center py-3">
+                <h4 class="mb-0 fw-bold"><i class="bi bi-mortarboard me-2"></i>Student Registration</h4>
+                <small>Create your student account to book exam slots</small>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST" action="{{ url_for('register_student') }}">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="full_name" class="form-label fw-semibold">Full Name *</label>
+                            <input type="text" class="form-control" id="full_name" name="full_name" required placeholder="e.g. Rahul Sharma">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="roll_no" class="form-label fw-semibold">Roll Number / Student ID *</label>
+                            <input type="text" class="form-control" id="roll_no" name="roll_no" required placeholder="e.g. 21f1001234">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="username" class="form-label fw-semibold">Username *</label>
+                            <input type="text" class="form-control" id="username" name="username" required placeholder="Choose a username">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="email" class="form-label fw-semibold">Email Address *</label>
+                            <input type="email" class="form-control" id="email" name="email" required placeholder="student@example.com">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="department" class="form-label fw-semibold">Department / Program *</label>
+                            <input type="text" class="form-control" id="department" name="department" required placeholder="e.g. BS Data Science">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="phone" class="form-label fw-semibold">Phone Number</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" placeholder="e.g. 9876543210">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="password" class="form-label fw-semibold">Password *</label>
+                            <input type="password" class="form-control" id="password" name="password" required placeholder="Minimum 6 characters">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="confirm_password" class="form-label fw-semibold">Confirm Password *</label>
+                            <input type="password" class="form-control" id="confirm_password" name="confirm_password" required placeholder="Re-enter password">
+                        </div>
+                    </div>
+
+                    <div class="d-grid mt-3">
+                        <button type="submit" class="btn btn-primary btn-lg">Create Student Account</button>
+                    </div>
+                </form>
+
+                <hr class="my-4">
+                <div class="text-center small">
+                    Already have an account? <a href="{{ url_for('login') }}" class="text-decoration-none fw-bold">Login here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

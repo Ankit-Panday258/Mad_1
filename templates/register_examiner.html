@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Examiner Registration - EMP{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center py-4">
+    <div class="col-md-7 col-lg-6">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-success text-white text-center py-3">
+                <h4 class="mb-0 fw-bold"><i class="bi bi-person-badge me-2"></i>Examiner / Faculty Registration</h4>
+                <small>Register to conduct examinations and evaluations</small>
+            </div>
+            <div class="card-body p-4">
+                <div class="alert alert-warning py-2 small mb-3">
+                    <i class="bi bi-info-circle-fill me-1"></i> <strong>Note:</strong> Examiner accounts require Admin approval before you can access the dashboard and create slots.
+                </div>
+
+                <form method="POST" action="{{ url_for('register_examiner') }}">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="full_name" class="form-label fw-semibold">Full Name *</label>
+                            <input type="text" class="form-control" id="full_name" name="full_name" required placeholder="e.g. Dr. Ramesh Kumar">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="department" class="form-label fw-semibold">Department *</label>
+                            <input type="text" class="form-control" id="department" name="department" required placeholder="e.g. Computer Science">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="username" class="form-label fw-semibold">Username *</label>
+                            <input type="text" class="form-control" id="username" name="username" required placeholder="Choose a username">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="email" class="form-label fw-semibold">Email Address *</label>
+                            <input type="email" class="form-control" id="email" name="email" required placeholder="faculty@institution.edu">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="phone" class="form-label fw-semibold">Contact / Phone Number</label>
+                        <input type="tel" class="form-control" id="phone" name="phone" placeholder="e.g. 9876543210">
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="password" class="form-label fw-semibold">Password *</label>
+                            <input type="password" class="form-control" id="password" name="password" required placeholder="Minimum 6 characters">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="confirm_password" class="form-label fw-semibold">Confirm Password *</label>
+                            <input type="password" class="form-control" id="confirm_password" name="confirm_password" required placeholder="Re-enter password">
+                        </div>
+                    </div>
+
+                    <div class="d-grid mt-3">
+                        <button type="submit" class="btn btn-success btn-lg">Submit Registration</button>
+                    </div>
+                </form>
+
+                <hr class="my-4">
+                <div class="text-center small">
+                    Already registered? <a href="{{ url_for('login') }}" class="text-decoration-none fw-bold">Login here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

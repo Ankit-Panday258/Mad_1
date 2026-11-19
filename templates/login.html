@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - EMP{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center py-4">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white text-center py-3">
+                <h4 class="mb-0 fw-bold"><i class="bi bi-box-arrow-in-right me-2"></i>Sign In</h4>
+                <small>Admin, Examiner, or Student</small>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST" action="{{ url_for('login') }}">
+                    <div class="mb-3">
+                        <label for="username" class="form-label fw-semibold">Username or Email</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-person"></i></span>
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Enter username or email" required autofocus>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="password" class="form-label fw-semibold">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+                        </div>
+                    </div>
+
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg"><i class="bi bi-box-arrow-in-right"></i> Login</button>
+                    </div>
+                </form>
+
+                <hr class="my-4">
+
+                <div class="text-center small">
+                    <p class="mb-1 text-muted">Don't have an account?</p>
+                    <a href="{{ url_for('register_student') }}" class="text-decoration-none fw-bold me-2">Register as Student</a> | 
+                    <a href="{{ url_for('register_examiner') }}" class="text-decoration-none fw-bold ms-2">Register as Examiner</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
