@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Examination Results - Student{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold mb-1"><i class="bi bi-award-fill text-warning"></i> My Published Results</h2>
+        <p class="text-muted mb-0">View grades, marks scored, examiner remarks, and download scorecards</p>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Examination</th>
+                        <th>Course</th>
+                        <th>Examiner</th>
+                        <th>Marks Obtained</th>
+                        <th>Percentage</th>
+                        <th>Evaluation Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ev in evaluations %}
+                    <tr>
+                        <td>
+                            <div class="fw-bold">{{ ev.examination.exam_name }}</div>
+                            <small class="text-muted">{{ ev.examination.exam_type }}</small>
+                        </td>
+                        <td><span class="badge bg-secondary">{{ ev.examination.course.course_code }}</span></td>
+                        <td>{{ ev.examiner.full_name }}</td>
+                        <td>
+                            <span class="fw-bold text-success fs-6">{{ ev.total_marks }} / {{ ev.examination.max_marks }}</span>
+                        </td>
+                        <td>
+                            {% set pct = (ev.total_marks / ev.examination.max_marks) * 100 %}
+                            <span class="badge bg-{{ 'success' if pct >= 60 else 'warning text-dark' if pct >= 40 else 'danger' }}">
+                                {{ "%.1f"|format(pct) }}%
+                            </span>
+                        </td>
+                        <td>{{ ev.evaluated_at.strftime('%d %b %Y') }}</td>
+                        <td>
+                            <a href="{{ url_for('student_scorecard', eval_id=ev.id) }}" class="btn btn-sm btn-primary">
+                                <i class="bi bi-file-earmark-text"></i> View Scorecard
+                            </a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="7" class="text-center py-5 text-muted">
+                            <i class="bi bi-hourglass-bottom fs-1 d-block mb-2 text-secondary"></i>
+                            No examination results published yet. Results will appear here once examiners complete their evaluation.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

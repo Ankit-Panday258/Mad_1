@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %}Evaluate Student - EMP{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <a href="{{ url_for('examiner_slot_bookings', slot_id=booking.slot_id) }}" class="btn btn-outline-secondary btn-sm mb-2">&larr; Back to Slot Students</a>
+    <h2 class="fw-bold mb-1"><i class="bi bi-award text-success"></i> Student Evaluation</h2>
+    <p class="text-muted mb-0">Grade student performance based on examination rubrics criteria</p>
+</div>
+
+<div class="row g-4">
+    <!-- Student & Exam Details -->
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-light fw-bold py-3">
+                <i class="bi bi-person-circle me-1"></i> Student Details
+            </div>
+            <div class="card-body">
+                <p class="mb-1"><strong>Name:</strong> {{ booking.student.full_name }}</p>
+                <p class="mb-1"><strong>Roll Number:</strong> {{ booking.student.roll_no }}</p>
+                <p class="mb-1"><strong>Department:</strong> {{ booking.student.department or 'N/A' }}</p>
+                <p class="mb-0"><strong>Email:</strong> {{ booking.student.email }}</p>
+            </div>
+        </div>
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-light fw-bold py-3">
+                <i class="bi bi-file-earmark-check me-1"></i> Exam Information
+            </div>
+            <div class="card-body">
+                <p class="mb-1"><strong>Exam Name:</strong> {{ exam.exam_name }}</p>
+                <p class="mb-1"><strong>Course:</strong> {{ exam.course.course_code }} - {{ exam.course.course_name }}</p>
+                <p class="mb-1"><strong>Type:</strong> {{ exam.exam_type }}</p>
+                <p class="mb-1"><strong>Total Max Marks:</strong> {{ exam.max_marks }}</p>
+                <p class="mb-0"><strong>Slot:</strong> {{ booking.slot.date.strftime('%d %b %Y') }} ({{ booking.slot.start_time.strftime('%H:%M') }})</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Evaluation Form with Rubrics -->
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-success text-white py-3">
+                <h5 class="mb-0 fw-bold"><i class="bi bi-check2-square me-2"></i>Grading Form (Rubrics-Based)</h5>
+            </div>
+            <div class="card-body p-4">
+                {% if not rubrics %}
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle me-1"></i> No rubrics have been defined for this examination yet. Please ask the Administrator to define rubrics before evaluation.
+                    </div>
+                {% else %}
+                    <form method="POST">
+                        <div class="table-responsive mb-4">
+                            <table class="table table-bordered align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="width: 45%;">Rubric Criterion</th>
+                                        <th style="width: 25%;">Marks Obtained</th>
+                                        <th style="width: 30%;">Criterion Remark (Optional)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for r in rubrics %}
+                                    <tr>
+                                        <td>
+                                            <div class="fw-bold">{{ r.criterion_name }}</div>
+                                            <small class="text-muted">{{ r.description or '' }}</small>
+                                            <div class="mt-1">
+                                                <span class="badge bg-secondary">Max: {{ r.max_marks }} marks</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="input-group">
+                                                <input type="number" step="0.5" min="0" max="{{ r.max_marks }}" 
+                                                       name="rubric_{{ r.id }}" class="form-control fw-bold" 
+                                                       placeholder="0" required
+                                                       value="{% if evaluation %}{% for s in evaluation.scores %}{% if s.rubric_id == r.id %}{{ s.marks_obtained }}{% endif %}{% endfor %}{% endif %}">
+                                                <span class="input-group-text">/ {{ r.max_marks }}</span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input type="text" name="rubric_remark_{{ r.id }}" class="form-control form-control-sm" 
+                                                   placeholder="Notes for this criterion"
+                                                   value="{% if evaluation %}{% for s in evaluation.scores %}{% if s.rubric_id == r.id %}{{ s.criterion_remarks or '' }}{% endif %}{% endfor %}{% endif %}">
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="remarks" class="form-label fw-semibold">Overall Feedback & Remarks *</label>
+                            <textarea class="form-control" id="remarks" name="remarks" rows="4" required placeholder="Detailed feedback, strengths, and areas for improvement">{{ evaluation.remarks if evaluation else '' }}</textarea>
+                            <div class="form-text">This feedback will be visible on the student's published scorecard.</div>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ url_for('examiner_slot_bookings', slot_id=booking.slot_id) }}" class="btn btn-outline-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-success btn-lg"><i class="bi bi-send-check me-1"></i> Submit Evaluation</button>
+                        </div>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
