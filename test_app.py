@@ -187,7 +187,7 @@ class EMPTestCase(unittest.TestCase):
         self.login('stu1', 'stupass')
         res_scorecard = self.client.get('/student/results/1/scorecard')
         self.assertEqual(res_scorecard.status_code, 200)
-        self.assertIn(b'Official Student Examination Scorecard', res_scorecard.data)
+        self.assertIn(b'Exam Scorecard', res_scorecard.data)
         self.assertIn(b'93.0', res_scorecard.data)  # 45 + 48
         self.logout()
 
