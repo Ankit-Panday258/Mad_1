@@ -7,7 +7,7 @@
     <a href="{{ url_for('admin_exams') }}" class="btn btn-outline-secondary btn-sm mb-2">&larr; Back to Examinations</a>
     <div class="d-flex justify-content-between align-items-center">
         <div>
-            <h2 class="fw-bold mb-1"><i class="bi bi-list-check text-primary"></i> Examination Rubrics</h2>
+            <h2 class="fw-bold mb-1">Examination Rubrics</h2>
             <p class="text-muted mb-0">Exam: <strong>{{ exam.exam_name }}</strong> (Max Marks: {{ exam.max_marks }})</p>
         </div>
     </div>
@@ -18,7 +18,7 @@
     <div class="col-lg-7">
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white py-3">
-                <h5 class="mb-0 fw-bold"><i class="bi bi-card-checklist text-success me-2"></i>Defined Criteria</h5>
+                <h5 class="mb-0 fw-bold">Defined Criteria</h5>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
@@ -41,7 +41,7 @@
                                 <td class="small text-muted">{{ r.description or '-' }}</td>
                                 <td>
                                     <form method="POST" action="{{ url_for('admin_delete_rubric', rubric_id=r.id) }}" onsubmit="return confirm('Delete this criterion?');">
-                                        <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
                                     </form>
                                 </td>
                             </tr>
@@ -61,7 +61,7 @@
     <div class="col-lg-5">
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-primary text-white py-3">
-                <h5 class="mb-0 fw-bold"><i class="bi bi-plus-circle me-2"></i>Add Rubric Criterion</h5>
+                <h5 class="mb-0 fw-bold">Add Rubric Criterion</h5>
             </div>
             <div class="card-body p-4">
                 <form method="POST" action="{{ url_for('admin_create_rubric', exam_id=exam.id) }}">
@@ -87,7 +87,7 @@
                     </div>
 
                     <div class="d-grid mt-4">
-                        <button type="submit" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i> Add Criterion</button>
+                        <button type="submit" class="btn btn-primary">Add Criterion</button>
                     </div>
                 </form>
             </div>

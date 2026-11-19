@@ -7,7 +7,7 @@
     <div class="col-md-7">
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-info text-dark py-3">
-                <h5 class="mb-0 fw-bold"><i class="bi bi-person-circle me-2"></i>My Student Profile</h5>
+                <h5 class="mb-0 fw-bold">My Student Profile</h5>
             </div>
             <div class="card-body p-4">
                 <form method="POST">
@@ -47,7 +47,7 @@
                     </div>
 
                     <hr class="my-3">
-                    <h6 class="fw-bold text-secondary mb-3"><i class="bi bi-key me-1"></i> Change Password (Optional)</h6>
+                    <h6 class="fw-bold text-secondary mb-3">Change Password (Optional)</h6>
                     <div class="mb-4">
                         <label for="new_password" class="form-label fw-semibold">New Password</label>
                         <input type="password" class="form-control" id="new_password" name="new_password" placeholder="Leave blank to keep current password">
@@ -55,7 +55,7 @@
 
                     <div class="d-flex justify-content-between">
                         <a href="{{ url_for('student_dashboard') }}" class="btn btn-outline-secondary">Cancel</a>
-                        <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle me-1"></i> Update Profile</button>
+                        <button type="submit" class="btn btn-primary">Update Profile</button>
                     </div>
                 </form>
             </div>

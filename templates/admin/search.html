@@ -5,7 +5,7 @@
 {% block content %}
 <div class="mb-4">
     <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary btn-sm mb-2">&larr; Back to Dashboard</a>
-    <h2 class="fw-bold mb-1"><i class="bi bi-search text-primary"></i> Search Results</h2>
+    <h2 class="fw-bold mb-1">Search Results</h2>
     <p class="text-muted mb-0">Results matching: "<strong>{{ query }}</strong>"</p>
 </div>
 
@@ -15,7 +15,7 @@
         <form action="{{ url_for('admin_search') }}" method="GET" class="row g-2 align-items-center">
             <div class="col-md-10">
                 <div class="input-group">
-                    <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                    <span class="input-group-text bg-white">Search</span>
                     <input type="text" name="q" value="{{ query }}" class="form-control border-start-0" placeholder="Search students, examiners, exams, or booking IDs...">
                 </div>
             </div>
@@ -28,7 +28,7 @@
 
 {% if not (students or examiners or exams or bookings) and query %}
     <div class="alert alert-info">
-        <i class="bi bi-info-circle me-1"></i> No matching records found for "<strong>{{ query }}</strong>".
+        No matching records found for "<strong>{{ query }}</strong>".
     </div>
 {% endif %}
 
@@ -36,7 +36,7 @@
 {% if students %}
 <div class="card border-0 shadow-sm mb-4">
     <div class="card-header bg-white py-3">
-        <h5 class="fw-bold mb-0 text-info"><i class="bi bi-people me-2"></i>Students ({{ students|length }})</h5>
+        <h5 class="fw-bold mb-0 text-info">Students ({{ students|length }})</h5>
     </div>
     <div class="card-body p-0">
         <div class="table-responsive">
@@ -71,7 +71,7 @@
 {% if examiners %}
 <div class="card border-0 shadow-sm mb-4">
     <div class="card-header bg-white py-3">
-        <h5 class="fw-bold mb-0 text-warning"><i class="bi bi-person-badge me-2"></i>Examiners ({{ examiners|length }})</h5>
+        <h5 class="fw-bold mb-0 text-warning">Examiners ({{ examiners|length }})</h5>
     </div>
     <div class="card-body p-0">
         <div class="table-responsive">
@@ -106,7 +106,7 @@
 {% if exams %}
 <div class="card border-0 shadow-sm mb-4">
     <div class="card-header bg-white py-3">
-        <h5 class="fw-bold mb-0 text-success"><i class="bi bi-file-earmark-check me-2"></i>Examinations ({{ exams|length }})</h5>
+        <h5 class="fw-bold mb-0 text-success">Examinations ({{ exams|length }})</h5>
     </div>
     <div class="card-body p-0">
         <div class="table-responsive">
@@ -141,7 +141,7 @@
 {% if bookings %}
 <div class="card border-0 shadow-sm mb-4">
     <div class="card-header bg-white py-3">
-        <h5 class="fw-bold mb-0 text-primary"><i class="bi bi-card-checklist me-2"></i>Bookings ({{ bookings|length }})</h5>
+        <h5 class="fw-bold mb-0 text-primary">Bookings ({{ bookings|length }})</h5>
     </div>
     <div class="card-body p-0">
         <div class="table-responsive">

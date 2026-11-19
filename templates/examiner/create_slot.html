@@ -7,12 +7,12 @@
     <div class="col-md-7">
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-success text-white py-3">
-                <h5 class="mb-0 fw-bold"><i class="bi bi-calendar-plus me-2"></i>Create Examination Slot</h5>
+                <h5 class="mb-0 fw-bold">Create Examination Slot</h5>
             </div>
             <div class="card-body p-4">
                 {% if not exams %}
                     <div class="alert alert-warning mb-0">
-                        <i class="bi bi-exclamation-circle me-1"></i> No examinations are currently open for slot creation. Please check back later or contact the administrator.
+                        No examinations are currently open for slot creation. Please check back later or contact the administrator.
                     </div>
                     <div class="mt-3">
                         <a href="{{ url_for('examiner_dashboard') }}" class="btn btn-outline-secondary">&larr; Back to Dashboard</a>
@@ -61,7 +61,7 @@
 
                         <div class="d-flex justify-content-between">
                             <a href="{{ url_for('examiner_slots') }}" class="btn btn-outline-secondary">Cancel</a>
-                            <button type="submit" class="btn btn-success"><i class="bi bi-check-circle me-1"></i> Save Slot</button>
+                            <button type="submit" class="btn btn-success">Save Slot</button>
                         </div>
                     </form>
                 {% endif %}

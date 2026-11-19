@@ -5,15 +5,15 @@
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h2 class="fw-bold text-dark mb-1"><i class="bi bi-shield-lock-fill text-primary"></i> Administrator Dashboard</h2>
+        <h2 class="fw-bold text-dark mb-1">Administrator Dashboard</h2>
         <p class="text-muted mb-0">Overview of examinations, examiners, courses, and student bookings</p>
     </div>
     <div class="d-flex gap-2">
-        <a href="{{ url_for('admin_create_exam') }}" class="btn btn-primary"><i class="bi bi-plus-circle me-1"></i> New Exam</a>
-        <a href="{{ url_for('admin_create_course') }}" class="btn btn-outline-primary"><i class="bi bi-journal-plus me-1"></i> New Course</a>
+        <a href="{{ url_for('admin_create_exam') }}" class="btn btn-primary">New Exam</a>
+        <a href="{{ url_for('admin_create_course') }}" class="btn btn-outline-primary">New Course</a>
         <form method="POST" action="{{ url_for('admin_seed_demo_data') }}" class="d-inline" onsubmit="return confirm('Load sample courses, exams, and examiners?');">
             <button type="submit" class="btn btn-outline-secondary" title="Populate demo data for testing and viva presentation">
-                <i class="bi bi-database-fill-add"></i> Load Demo Data
+                Load Demo Data
             </button>
         </form>
     </div>
@@ -25,7 +25,7 @@
         <form action="{{ url_for('admin_search') }}" method="GET" class="row g-2 align-items-center">
             <div class="col-md-10">
                 <div class="input-group">
-                    <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                    <span class="input-group-text bg-white">Search</span>
                     <input type="text" name="q" class="form-control border-start-0" placeholder="Search students (by name, roll no), examiners, exams, or booking IDs...">
                 </div>
             </div>
@@ -41,7 +41,6 @@
     <div class="col-md-4 col-lg-2">
         <div class="card border-0 shadow-sm text-center h-100">
             <div class="card-body">
-                <div class="text-primary fs-3 mb-1"><i class="bi bi-journal-text"></i></div>
                 <h3 class="fw-bold mb-0">{{ courses_count }}</h3>
                 <small class="text-muted">Courses</small>
                 <div class="mt-2"><a href="{{ url_for('admin_courses') }}" class="small text-decoration-none">View All &rarr;</a></div>
@@ -51,7 +50,6 @@
     <div class="col-md-4 col-lg-2">
         <div class="card border-0 shadow-sm text-center h-100">
             <div class="card-body">
-                <div class="text-success fs-3 mb-1"><i class="bi bi-file-earmark-check"></i></div>
                 <h3 class="fw-bold mb-0">{{ exams_count }}</h3>
                 <small class="text-muted">Examinations</small>
                 <div class="mt-2"><a href="{{ url_for('admin_exams') }}" class="small text-decoration-none">View All &rarr;</a></div>
@@ -61,7 +59,6 @@
     <div class="col-md-4 col-lg-2">
         <div class="card border-0 shadow-sm text-center h-100">
             <div class="card-body">
-                <div class="text-warning fs-3 mb-1"><i class="bi bi-person-badge"></i></div>
                 <h3 class="fw-bold mb-0">{{ examiners_count }}</h3>
                 <small class="text-muted">Examiners</small>
                 {% if pending_examiners_count > 0 %}
@@ -74,7 +71,6 @@
     <div class="col-md-4 col-lg-2">
         <div class="card border-0 shadow-sm text-center h-100">
             <div class="card-body">
-                <div class="text-info fs-3 mb-1"><i class="bi bi-people"></i></div>
                 <h3 class="fw-bold mb-0">{{ students_count }}</h3>
                 <small class="text-muted">Students</small>
                 <div class="mt-2"><a href="{{ url_for('admin_students') }}" class="small text-decoration-none">View All &rarr;</a></div>
@@ -84,7 +80,6 @@
     <div class="col-md-4 col-lg-2">
         <div class="card border-0 shadow-sm text-center h-100">
             <div class="card-body">
-                <div class="text-secondary fs-3 mb-1"><i class="bi bi-clock-history"></i></div>
                 <h3 class="fw-bold mb-0">{{ slots_count }}</h3>
                 <small class="text-muted">Exam Slots</small>
                 <div class="mt-2"><a href="{{ url_for('admin_slots') }}" class="small text-decoration-none">View All &rarr;</a></div>
@@ -94,7 +89,6 @@
     <div class="col-md-4 col-lg-2">
         <div class="card border-0 shadow-sm text-center h-100">
             <div class="card-body">
-                <div class="text-danger fs-3 mb-1"><i class="bi bi-card-checklist"></i></div>
                 <h3 class="fw-bold mb-0">{{ bookings_count }}</h3>
                 <small class="text-muted">Total Bookings</small>
                 <div class="mt-2"><a href="{{ url_for('admin_bookings') }}" class="small text-decoration-none">View All &rarr;</a></div>
@@ -107,7 +101,7 @@
 {% if pending_examiners %}
 <div class="card border-warning mb-4 shadow-sm">
     <div class="card-header bg-warning text-dark fw-bold d-flex justify-content-between align-items-center">
-        <span><i class="bi bi-exclamation-triangle-fill me-1"></i> Pending Examiner Approval Requests ({{ pending_examiners|length }})</span>
+        <span>Pending Examiner Approval Requests ({{ pending_examiners|length }})</span>
         <a href="{{ url_for('admin_examiners') }}" class="btn btn-sm btn-dark">Manage All</a>
     </div>
     <div class="card-body p-0">
@@ -133,10 +127,10 @@
                         <td>{{ ex.phone or 'N/A' }}</td>
                         <td>
                             <form method="POST" action="{{ url_for('admin_examiner_status', user_id=ex.id, action='approve') }}" class="d-inline">
-                                <button type="submit" class="btn btn-sm btn-success"><i class="bi bi-check-lg"></i> Approve</button>
+                                <button type="submit" class="btn btn-sm btn-success">Approve</button>
                             </form>
                             <form method="POST" action="{{ url_for('admin_examiner_status', user_id=ex.id, action='deactivate') }}" class="d-inline ms-1">
-                                <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-x-lg"></i> Reject</button>
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Reject</button>
                             </form>
                         </td>
                     </tr>
@@ -153,7 +147,7 @@
     <div class="col-lg-7">
         <div class="card border-0 shadow-sm h-100">
             <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
-                <h5 class="mb-0 fw-bold"><i class="bi bi-file-earmark-text text-primary me-2"></i>Examinations</h5>
+                <h5 class="mb-0 fw-bold">Examinations</h5>
                 <a href="{{ url_for('admin_exams') }}" class="btn btn-sm btn-outline-primary">View All</a>
             </div>
             <div class="card-body p-0">
@@ -189,7 +183,7 @@
                                 </td>
                                 <td>
                                     <a href="{{ url_for('admin_exam_rubrics', exam_id=exam.id) }}" class="btn btn-sm btn-outline-secondary" title="Manage Rubrics">Rubrics ({{ exam.rubrics|length }})</a>
-                                    <a href="{{ url_for('admin_edit_exam', exam_id=exam.id) }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></a>
+                                    <a href="{{ url_for('admin_edit_exam', exam_id=exam.id) }}" class="btn btn-sm btn-outline-primary">Edit</a>
                                 </td>
                             </tr>
                             {% else %}
@@ -207,7 +201,7 @@
     <div class="col-lg-5">
         <div class="card border-0 shadow-sm h-100">
             <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
-                <h5 class="mb-0 fw-bold"><i class="bi bi-calendar2-check text-success me-2"></i>Recent Bookings</h5>
+                <h5 class="mb-0 fw-bold">Recent Bookings</h5>
                 <a href="{{ url_for('admin_bookings') }}" class="btn btn-sm btn-outline-success">View All</a>
             </div>
             <div class="card-body p-0">

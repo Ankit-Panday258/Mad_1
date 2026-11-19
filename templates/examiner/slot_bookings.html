@@ -7,7 +7,7 @@
     <a href="{{ url_for('examiner_slots') }}" class="btn btn-outline-secondary btn-sm mb-2">&larr; Back to My Slots</a>
     <div class="d-flex justify-content-between align-items-center">
         <div>
-            <h2 class="fw-bold mb-1"><i class="bi bi-people text-success"></i> Booked Students & Evaluations</h2>
+            <h2 class="fw-bold mb-1">Booked Students & Evaluations</h2>
             <p class="text-muted mb-0">
                 Exam: <strong>{{ slot.examination.exam_name }}</strong> | 
                 Slot: <strong>{{ slot.date.strftime('%d %b %Y') }}</strong> ({{ slot.start_time.strftime('%H:%M') }} - {{ slot.end_time.strftime('%H:%M') }})
@@ -51,16 +51,16 @@
                         </td>
                         <td>
                             {% if b.evaluation %}
-                                <span class="badge bg-success"><i class="bi bi-check2-circle"></i> Evaluated</span>
+                                <span class="badge bg-success">Evaluated</span>
                                 <div class="fw-bold text-success mt-1">{{ b.evaluation.total_marks }} / {{ slot.examination.max_marks }} marks</div>
                             {% else %}
-                                <span class="badge bg-warning text-dark"><i class="bi bi-clock"></i> Pending Evaluation</span>
+                                <span class="badge bg-warning text-dark">Pending Evaluation</span>
                             {% endif %}
                         </td>
                         <td>
                             {% if b.status != 'Cancelled' %}
                                 <a href="{{ url_for('examiner_evaluate_booking', booking_id=b.id) }}" class="btn btn-sm btn-{{ 'outline-primary' if b.evaluation else 'success' }}">
-                                    <i class="bi bi-pencil-square"></i> {{ 'Re-Evaluate / View' if b.evaluation else 'Evaluate Now' }}
+                                    {{ 'Re-Evaluate / View' if b.evaluation else 'Evaluate Now' }}
                                 </a>
                             {% else %}
                                 <span class="text-muted small">Cancelled</span>

@@ -5,10 +5,10 @@
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h2 class="fw-bold mb-1"><i class="bi bi-person-badge-fill text-success"></i> Examiner Dashboard</h2>
+        <h2 class="fw-bold mb-1">Examiner Dashboard</h2>
         <p class="text-muted mb-0">Welcome, <strong>{{ session.get('full_name') }}</strong> | Manage examination slots and conduct evaluations</p>
     </div>
-    <a href="{{ url_for('examiner_create_slot') }}" class="btn btn-success"><i class="bi bi-plus-circle me-1"></i> Create Examination Slot</a>
+    <a href="{{ url_for('examiner_create_slot') }}" class="btn btn-success">Create Examination Slot</a>
 </div>
 
 <!-- Metrics Cards -->
@@ -16,7 +16,6 @@
     <div class="col-md-4">
         <div class="card border-0 shadow-sm text-center">
             <div class="card-body py-4">
-                <div class="text-primary fs-3 mb-1"><i class="bi bi-calendar2-range"></i></div>
                 <h3 class="fw-bold mb-0">{{ slots_count }}</h3>
                 <small class="text-muted">Total Slots Created</small>
                 <div class="mt-2"><a href="{{ url_for('examiner_slots') }}" class="small text-decoration-none">Manage Slots &rarr;</a></div>
@@ -26,7 +25,6 @@
     <div class="col-md-4">
         <div class="card border-0 shadow-sm text-center">
             <div class="card-body py-4">
-                <div class="text-info fs-3 mb-1"><i class="bi bi-person-check"></i></div>
                 <h3 class="fw-bold mb-0">{{ total_booked_students }}</h3>
                 <small class="text-muted">Students Booked</small>
                 <div class="mt-2"><span class="small text-muted">Across all your slots</span></div>
@@ -36,7 +34,6 @@
     <div class="col-md-4">
         <div class="card border-0 shadow-sm text-center">
             <div class="card-body py-4">
-                <div class="text-warning fs-3 mb-1"><i class="bi bi-hourglass-split"></i></div>
                 <h3 class="fw-bold mb-0">{{ pending_evaluations }}</h3>
                 <small class="text-muted">Pending Student Evaluations</small>
                 <div class="mt-2"><span class="small text-muted">Awaiting your evaluation marks</span></div>
@@ -48,7 +45,7 @@
 <!-- Active Examinations for Slot Creation -->
 <div class="card border-0 shadow-sm mb-4">
     <div class="card-header bg-white py-3">
-        <h5 class="fw-bold mb-0"><i class="bi bi-journal-check text-primary me-2"></i>Examinations Open for Slot Creation</h5>
+        <h5 class="fw-bold mb-0">Examinations Open for Slot Creation</h5>
     </div>
     <div class="card-body p-0">
         <div class="table-responsive">
@@ -76,7 +73,7 @@
                         <td>
                             {% if ex.is_slot_creation_allowed() %}
                                 <a href="{{ url_for('examiner_create_slot') }}" class="btn btn-sm btn-success">
-                                    <i class="bi bi-plus-lg"></i> Create Slot
+                                    Create Slot
                                 </a>
                             {% else %}
                                 <span class="badge bg-secondary">Closed for Slot Creation</span>
@@ -97,7 +94,7 @@
 <!-- Recent Slots Created -->
 <div class="card border-0 shadow-sm">
     <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
-        <h5 class="fw-bold mb-0"><i class="bi bi-calendar-check text-success me-2"></i>Recent Slots</h5>
+        <h5 class="fw-bold mb-0">Recent Slots</h5>
         <a href="{{ url_for('examiner_slots') }}" class="btn btn-sm btn-outline-success">View All Slots</a>
     </div>
     <div class="card-body p-0">
@@ -136,7 +133,7 @@
                         </td>
                         <td>
                             <a href="{{ url_for('examiner_slot_bookings', slot_id=slot.id) }}" class="btn btn-sm btn-primary">
-                                <i class="bi bi-people"></i> View & Evaluate ({{ slot.bookings|length }})
+                                View & Evaluate ({{ slot.bookings|length }})
                             </a>
                         </td>
                     </tr>

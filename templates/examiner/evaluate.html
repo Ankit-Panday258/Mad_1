@@ -5,7 +5,7 @@
 {% block content %}
 <div class="mb-4">
     <a href="{{ url_for('examiner_slot_bookings', slot_id=booking.slot_id) }}" class="btn btn-outline-secondary btn-sm mb-2">&larr; Back to Slot Students</a>
-    <h2 class="fw-bold mb-1"><i class="bi bi-award text-success"></i> Student Evaluation</h2>
+    <h2 class="fw-bold mb-1">Student Evaluation</h2>
     <p class="text-muted mb-0">Grade student performance based on examination rubrics criteria</p>
 </div>
 
@@ -14,7 +14,7 @@
     <div class="col-lg-4">
         <div class="card border-0 shadow-sm mb-4">
             <div class="card-header bg-light fw-bold py-3">
-                <i class="bi bi-person-circle me-1"></i> Student Details
+                Student Details
             </div>
             <div class="card-body">
                 <p class="mb-1"><strong>Name:</strong> {{ booking.student.full_name }}</p>
@@ -26,7 +26,7 @@
 
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-light fw-bold py-3">
-                <i class="bi bi-file-earmark-check me-1"></i> Exam Information
+                Exam Information
             </div>
             <div class="card-body">
                 <p class="mb-1"><strong>Exam Name:</strong> {{ exam.exam_name }}</p>
@@ -42,12 +42,12 @@
     <div class="col-lg-8">
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-success text-white py-3">
-                <h5 class="mb-0 fw-bold"><i class="bi bi-check2-square me-2"></i>Grading Form (Rubrics-Based)</h5>
+                <h5 class="mb-0 fw-bold">Grading Form (Rubrics-Based)</h5>
             </div>
             <div class="card-body p-4">
                 {% if not rubrics %}
                     <div class="alert alert-warning">
-                        <i class="bi bi-exclamation-triangle me-1"></i> No rubrics have been defined for this examination yet. Please ask the Administrator to define rubrics before evaluation.
+                        No rubrics have been defined for this examination yet. Please ask the Administrator to define rubrics before evaluation.
                     </div>
                 {% else %}
                     <form method="POST">
@@ -98,7 +98,7 @@
 
                         <div class="d-flex justify-content-between">
                             <a href="{{ url_for('examiner_slot_bookings', slot_id=booking.slot_id) }}" class="btn btn-outline-secondary">Cancel</a>
-                            <button type="submit" class="btn btn-success btn-lg"><i class="bi bi-send-check me-1"></i> Submit Evaluation</button>
+                            <button type="submit" class="btn btn-success btn-lg">Submit Evaluation</button>
                         </div>
                     </form>
                 {% endif %}

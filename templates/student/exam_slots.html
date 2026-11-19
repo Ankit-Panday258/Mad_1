@@ -5,13 +5,12 @@
 {% block content %}
 <div class="mb-4">
     <a href="{{ url_for('student_exams') }}" class="btn btn-outline-secondary btn-sm mb-2">&larr; Back to Examinations</a>
-    <h2 class="fw-bold mb-1"><i class="bi bi-calendar-plus text-primary"></i> Available Examination Slots</h2>
+    <h2 class="fw-bold mb-1">Available Examination Slots</h2>
     <p class="text-muted mb-0">Exam: <strong>{{ exam.exam_name }}</strong> ({{ exam.course.course_code }}) | Type: {{ exam.exam_type }}</p>
 </div>
 
 {% if existing_booking %}
 <div class="alert alert-warning d-flex align-items-center mb-4">
-    <i class="bi bi-info-circle-fill fs-4 me-3"></i>
     <div>
         <strong>You have already booked a slot for this examination!</strong><br>
         Your booked slot is on <strong>{{ existing_booking.slot.date.strftime('%d %b %Y') }}</strong> at <strong>{{ existing_booking.slot.start_time.strftime('%H:%M') }}</strong> with Examiner <strong>{{ existing_booking.slot.examiner.full_name }}</strong>.
@@ -22,7 +21,7 @@
 
 <div class="card border-0 shadow-sm">
     <div class="card-header bg-white py-3">
-        <h5 class="fw-bold mb-0"><i class="bi bi-clock text-primary me-2"></i>Select an Available Slot</h5>
+        <h5 class="fw-bold mb-0">Select an Available Slot</h5>
     </div>
     <div class="card-body p-0">
         <div class="table-responsive">
@@ -63,7 +62,7 @@
                             {% else %}
                                 <form method="POST" action="{{ url_for('student_book_slot', slot_id=slot.id) }}" onsubmit="return confirm('Confirm booking this slot on {{ slot.date }} at {{ slot.start_time.strftime('%H:%M') }}?');">
                                     <button type="submit" class="btn btn-primary btn-sm">
-                                        <i class="bi bi-bookmark-plus me-1"></i> Book Slot
+                                        Book Slot
                                     </button>
                                 </form>
                             {% endif %}
@@ -72,7 +71,7 @@
                     {% else %}
                     <tr>
                         <td colspan="7" class="text-center py-5 text-muted">
-                            <i class="bi bi-calendar-x fs-1 d-block mb-2 text-secondary"></i>
+                            
                             No available slots found for this examination at the moment. Please check back later.
                         </td>
                     </tr>
